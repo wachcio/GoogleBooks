@@ -1,11 +1,14 @@
 <template>
-  <div class="resultWrapper">rezultat</div>
+  <div class="resultWrapper">
+    rezultat
+    {{books}}
+  </div>
 </template>
 
 <script>
 export default {
   name: "Result",
-  props: {},
+  props: { books: Object },
   data() {
     return {};
   },

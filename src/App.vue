@@ -7,13 +7,15 @@
           <input type="search" name="search" id="search">
         </form>
       </div>
-      <Result/>
+      <Result :books="books"/>
     </div>
   </div>
 </template>
 
 <script>
 import Result from "./components/Result";
+import axios from "axios";
+import _ from "lodash";
 
 export default {
   name: "app",
@@ -22,8 +24,18 @@ export default {
   },
   data() {
     return {
-      books
+      books: null
     };
+  },
+  methods: {
+    getBooks() {
+      axios
+        .get("https://www.googleapis.com/books/v1/volumes?q=flowers")
+        .then(response => (this.books = response.data));
+    }
+  },
+  created() {
+    this.getBooks();
   }
 };
 </script>
