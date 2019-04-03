@@ -4,38 +4,40 @@
       <div class="searchWrapper">
         <h1>Wpisz szukany tytuł</h1>
         <form action>
-          <input type="search" name="search" id="search">
+          <input type="search" name="search" id="search" v-model="searchText" @input="getBooks">
         </form>
       </div>
-      <Result :books="books"/>
+      <Books :books="books"/>
     </div>
   </div>
 </template>
 
 <script>
-import Result from "./components/Result";
+import Books from "./components/Books";
 import axios from "axios";
 import _ from "lodash";
 
 export default {
   name: "app",
   components: {
-    Result
+    Books
   },
   data() {
     return {
-      books: null
+      books: null,
+      urlAPI: "https://www.googleapis.com/books/v1/volumes?q=",
+      searchText: ""
     };
   },
   methods: {
     getBooks() {
       axios
-        .get("https://www.googleapis.com/books/v1/volumes?q=flowers")
+        .get(`${this.urlAPI}${this.searchText}`)
         .then(response => (this.books = response.data));
     }
   },
   created() {
-    this.getBooks();
+    // this.getBooks();
   }
 };
 </script>
