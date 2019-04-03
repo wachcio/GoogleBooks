@@ -8,7 +8,6 @@
         </form>
       </div>
       <Books :books="books"/>
-      <button @click="moreBooks">Więcej</button>
     </div>
   </div>
 </template>
@@ -67,9 +66,26 @@ export default {
               response.data.items
             ))
         );
+    },
+    handleScroll(e) {
+      // console.log(e.target.scrollingElement.scrollTop);
+      // console.log(e.target.scrollingElement.scrollHeight);
+      // console.log(e);
+
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        // bottom of the page
+        if (this.books) {
+          this.moreBooks();
+        }
+      }
     }
   },
-  created() {}
+  created() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
 };
 </script>
 
