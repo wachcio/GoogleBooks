@@ -30,15 +30,16 @@ export default {
     };
   },
   methods: {
+    inputSearch() {
+      _.debounce(this.getBooks, 500);
+    },
     getBooks() {
       axios
         .get(`${this.urlAPI}${this.searchText}`)
         .then(response => (this.books = response.data));
     }
   },
-  created() {
-    // this.getBooks();
-  }
+  created() {}
 };
 </script>
 
