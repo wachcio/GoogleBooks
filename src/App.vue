@@ -29,8 +29,7 @@ export default {
       API: {
         url: "https://www.googleapis.com/books/v1/volumes?q=",
         startIndex: 0,
-        endIndex: 10,
-        maxResults: 20
+        maxResults: 10
       },
       searchText: ""
     };
@@ -40,17 +39,34 @@ export default {
       _.debounce(this.getBooks, 500);
     },
     getBooks() {
+      let array = [];
       axios
         .get(
           `${this.API.url}${this.searchText}&startIndex=${
             this.API.startIndex
           }&maxResults=${this.API.maxResults}`
         )
+        // .then(
+        //   response => (this.books = array.concat(this.books, response.data))
+        // );
         .then(response => (this.books = response.data));
     },
     moreBooks() {
-      this.API.startIndex += 20;
-      this.getBooks();
+      this.API.startIndex += this.API.maxResults;
+      let array = [];
+      axios
+        .get(
+          `${this.API.url}${this.searchText}&startIndex=${
+            this.API.startIndex
+          }&maxResults=${this.API.maxResults}`
+        )
+        .then(
+          response =>
+            (this.books.items = array.concat(
+              this.books.items,
+              response.data.items
+            ))
+        );
     }
   },
   created() {}
