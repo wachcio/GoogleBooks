@@ -1,7 +1,10 @@
 <template>
   <div class="book">
     <h2>{{book.volumeInfo.title}}</h2>
-    <img :src="book.volumeInfo.imageLinks.thumbnail" :alt="book.volumeInfo.title">
+    <img
+      :src="book.volumeInfo.imageLinks.thumbnail?book.volumeInfo.imageLinks.thumbnail:null"
+      :alt="book.volumeInfo.title"
+    >
     <p v-if="book.volumeInfo.description">{{shortDescription}}</p>
   </div>
 </template>
@@ -49,6 +52,7 @@ h2 {
 .book {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   padding: 0.5em;
   max-width: 30%;
@@ -56,6 +60,6 @@ h2 {
 p {
   font-size: 1em;
 
-  height: 4em;
+  //   height: 4em;
 }
 </style>

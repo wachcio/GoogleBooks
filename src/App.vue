@@ -8,6 +8,7 @@
         </form>
       </div>
       <Books :books="books"/>
+      <button @click="moreBooks">Więcej</button>
     </div>
   </div>
 </template>
@@ -25,7 +26,12 @@ export default {
   data() {
     return {
       books: null,
-      urlAPI: "https://www.googleapis.com/books/v1/volumes?q=",
+      API: {
+        url: "https://www.googleapis.com/books/v1/volumes?q=",
+        startIndex: 0,
+        endIndex: 10,
+        maxResults: 20
+      },
       searchText: ""
     };
   },
@@ -35,8 +41,16 @@ export default {
     },
     getBooks() {
       axios
-        .get(`${this.urlAPI}${this.searchText}`)
+        .get(
+          `${this.API.url}${this.searchText}&startIndex=${
+            this.API.startIndex
+          }&maxResults=${this.API.maxResults}`
+        )
         .then(response => (this.books = response.data));
+    },
+    moreBooks() {
+      this.API.startIndex += 20;
+      this.getBooks();
     }
   },
   created() {}
