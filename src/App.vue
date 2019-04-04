@@ -3,8 +3,15 @@
     <div class="container">
       <div class="searchWrapper">
         <h1>Wpisz szukany tytuł</h1>
-        <form action>
-          <input type="search" name="search" id="search" v-model="searchText" @input="getBooks">
+        <form action.prevent>
+          <input
+            type="search"
+            name="search"
+            id="search"
+            placeholder="Tytuł książki"
+            v-model="searchText"
+            @input="getBooks"
+          >
         </form>
       </div>
       <Books :books="books"/>
@@ -15,7 +22,6 @@
 <script>
 import Books from "./components/Books";
 import axios from "axios";
-import _ from "lodash";
 
 export default {
   name: "app",
@@ -35,9 +41,12 @@ export default {
   },
   methods: {
     inputSearch() {
+      console.log(_.debounce);
+
       _.debounce(this.getBooks, 500);
     },
     getBooks() {
+      // let gBooks = _.debounce(() => {
       let array = [];
       axios
         .get(
@@ -45,10 +54,8 @@ export default {
             this.API.startIndex
           }&maxResults=${this.API.maxResults}`
         )
-        // .then(
-        //   response => (this.books = array.concat(this.books, response.data))
-        // );
         .then(response => (this.books = response.data));
+      // }, 500);
     },
     moreBooks() {
       this.API.startIndex += this.API.maxResults;
@@ -83,6 +90,21 @@ export default {
   created() {
     window.addEventListener("scroll", this.handleScroll);
   },
+  // mounted() {
+  //   this.getBooks = _.debounce(function() {
+  //     let array = [];
+  //     axios
+  //       .get(
+  //         `${this.API.url}${this.searchText}&startIndex=${
+  //           this.API.startIndex
+  //         }&maxResults=${this.API.maxResults}`
+  //       )
+  //       // .then(
+  //       //   response => (this.books = array.concat(this.books, response.data))
+  //       // );
+  //       .then(response => (this.books = response.data));
+  //   }, 500);
+  // },
   destroyed() {
     window.removeEventListener("scroll", this.handleScroll);
   }
@@ -102,6 +124,8 @@ body {
   width: 100vw;
   font-family: "Roboto", sans-serif;
   font-size: 17px;
+  background-color: #333;
+  color: #ddd;
 
   & h1 {
     font-size: 2em;
@@ -122,6 +146,16 @@ body {
 
     & form {
       margin: 1em;
+
+      & input {
+        font-size: 1.2em;
+        color: #ddd;
+        border: #ddd solid 2px;
+        border-radius: 10px;
+        text-align: center;
+        background: none;
+        padding: 5px;
+      }
     }
   }
 }
