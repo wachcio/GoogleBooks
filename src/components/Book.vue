@@ -2,7 +2,7 @@
   <div class="book">
     <h2>{{book.volumeInfo.title}}</h2>
     <img
-      :src="book.volumeInfo.imageLinks.thumbnail?book.volumeInfo.imageLinks.thumbnail:null"
+      :src="book.volumeInfo.imageLinks?book.volumeInfo.imageLinks.thumbnail:'http://placehold.jp/24/cccccc/ffffff/150x200.png?text=No image'"
       :alt="book.volumeInfo.title"
     >
     <p v-if="book.volumeInfo.description">{{shortDescription}}</p>

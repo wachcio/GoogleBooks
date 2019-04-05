@@ -34,7 +34,7 @@ export default {
       API: {
         url: "https://www.googleapis.com/books/v1/volumes?q=",
         startIndex: 0,
-        maxResults: 10
+        maxResults: 20
       },
       searchText: ""
     };
