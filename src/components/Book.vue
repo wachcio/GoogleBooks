@@ -1,5 +1,5 @@
 <template>
-  <div class="book">
+  <div class="book" @click="getDetails">
     <h2>{{book.volumeInfo.title}}</h2>
     <img
       :src="book.volumeInfo.imageLinks?book.volumeInfo.imageLinks.thumbnail:'http://placehold.jp/24/cccccc/ffffff/150x200.png?text=No image'"
@@ -11,16 +11,29 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Book",
   props: {
     book: Object
   },
   data() {
-    return {};
+    return {
+      bookDetails: null,
+      API: {
+        url: "https://www.googleapis.com/books/v1/volumes/"
+      }
+    };
   },
   components: {},
-  methods: {},
+  methods: {
+    getDetails() {
+      axios
+        .get(`${this.API.url}${this.book.id}`)
+        .then(response => (this.bookDetails = response.data));
+    }
+  },
   computed: {
     shortDescription() {
       const maxWords = 12;
@@ -41,11 +54,22 @@ export default {
     }
   },
   created() {},
-  watch: {}
+  watch: {
+    bookDetails: function(newValue) {
+      this.$emit("setActiveBook", newValue);
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100vw;
+}
 .book {
   display: flex;
   flex-direction: column;
