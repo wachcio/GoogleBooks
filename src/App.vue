@@ -45,6 +45,7 @@ export default {
       },
       set: _.debounce(function(newValue) {
         this.searchText = newValue;
+        this.API.startIndex = 0;
         this.getBooks();
       }, 500)
     }
@@ -54,6 +55,7 @@ export default {
       // let gBooks = _.debounce(() => {
 
       let array = [];
+
       axios
         .get(
           `${this.API.url}${this.searchText}&startIndex=${
