@@ -6,6 +6,7 @@
       :alt="book.volumeInfo.title"
     >
     <p v-if="book.volumeInfo.description">{{shortDescription}}</p>
+    <p v-else>No description</p>
   </div>
 </template>
 
@@ -73,6 +74,7 @@ export default {
   & img {
     margin-bottom: 15px;
     height: 200px;
+    width: 150px;
     border: 0;
     border-bottom-left-radius: 15px;
     border-top-right-radius: 15px;

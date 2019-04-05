@@ -9,8 +9,7 @@
             name="search"
             id="search"
             placeholder="Tytuł książki"
-            v-model="searchText"
-            @input="getBooks"
+            v-model="inputText"
           >
         </form>
       </div>
@@ -22,7 +21,7 @@
 <script>
 import Books from "./components/Books";
 import axios from "axios";
-
+var _ = require("lodash");
 export default {
   name: "app",
   components: {
@@ -39,14 +38,21 @@ export default {
       searchText: ""
     };
   },
+  computed: {
+    inputText: {
+      get() {
+        return this.searchText;
+      },
+      set: _.debounce(function(newValue) {
+        this.searchText = newValue;
+        this.getBooks();
+      }, 500)
+    }
+  },
   methods: {
-    inputSearch() {
-      console.log(_.debounce);
-
-      _.debounce(this.getBooks, 500);
-    },
     getBooks() {
       // let gBooks = _.debounce(() => {
+
       let array = [];
       axios
         .get(
