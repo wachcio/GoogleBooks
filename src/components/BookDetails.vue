@@ -12,7 +12,7 @@
             <i class="fas fa-shopping-cart"></i>
           </a>
         </p>
-        <p>Język: {{activeBook.volumeInfo.language}}</p>
+        <p>Język: {{bookLanguage}}</p>
       </div>
       <div class="description" v-html="activeBook.volumeInfo.description"></div>
     </div>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import language from "../language.js";
 export default {
   name: "bookDetails",
   props: { activeBook: Object },
@@ -69,6 +70,17 @@ export default {
         }
       }
       return "http://placehold.jp/24/cccccc/ffffff/300x400.png?text=No image";
+    },
+    bookLanguage() {
+      //   return this.activeBook.volumeInfo.language;
+      for (const key in language) {
+        if (language.hasOwnProperty(key)) {
+          //   console.log(key, language[key]);
+          //   console.log(this.activeBook.volumeInfo.language == language[key]);
+
+          if (this.activeBook.volumeInfo.language == language[key]) return key;
+        }
+      }
     }
   },
   created() {},
