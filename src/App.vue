@@ -3,7 +3,7 @@
     <div class="container">
       <div class="searchWrapper">
         <h1>Wpisz szukany tytuł</h1>
-        <form action.prevent>
+        <form @submit.prevent>
           <input
             type="search"
             name="search"
@@ -11,6 +11,7 @@
             placeholder="Tytuł książki"
             v-model="inputText"
           >
+          <input type="checkbox" v-model="onlyPlBook"> Tylko polskie
         </form>
       </div>
       <Books :books="books"/>
@@ -33,9 +34,11 @@ export default {
       API: {
         url: "https://www.googleapis.com/books/v1/volumes?q=",
         startIndex: 0,
-        maxResults: 20
+        maxResults: 20,
+        PL: ""
       },
-      searchText: ""
+      searchText: "",
+      onlyPlBook: false
     };
   },
   computed: {
@@ -60,7 +63,7 @@ export default {
         .get(
           `${this.API.url}${this.searchText}&startIndex=${
             this.API.startIndex
-          }&maxResults=${this.API.maxResults}`
+          }&maxResults=${this.API.maxResults}${this.API.PL}`
         )
         .then(response => (this.books = response.data));
       // }, 500);
@@ -72,7 +75,7 @@ export default {
         .get(
           `${this.API.url}${this.searchText}&startIndex=${
             this.API.startIndex
-          }&maxResults=${this.API.maxResults}`
+          }&maxResults=${this.API.maxResults}${this.API.PL}`
         )
         .then(
           response =>
@@ -98,21 +101,16 @@ export default {
   created() {
     window.addEventListener("scroll", this.handleScroll);
   },
-  // mounted() {
-  //   this.getBooks = _.debounce(function() {
-  //     let array = [];
-  //     axios
-  //       .get(
-  //         `${this.API.url}${this.searchText}&startIndex=${
-  //           this.API.startIndex
-  //         }&maxResults=${this.API.maxResults}`
-  //       )
-  //       // .then(
-  //       //   response => (this.books = array.concat(this.books, response.data))
-  //       // );
-  //       .then(response => (this.books = response.data));
-  //   }, 500);
-  // },
+  watch: {
+    onlyPlBook(newValue) {
+      if (newValue == true) {
+        this.API.PL = "&langRestrict=pl";
+      } else {
+        this.API.PL = "";
+      }
+      this.getBooks();
+    }
+  },
   destroyed() {
     window.removeEventListener("scroll", this.handleScroll);
   }
@@ -163,6 +161,9 @@ body {
         text-align: center;
         background: none;
         padding: 5px;
+      }
+      & input[type="checkbox"] {
+        margin-left: 0.5em;
       }
     }
   }
