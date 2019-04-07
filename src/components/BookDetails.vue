@@ -37,7 +37,7 @@ export default {
     getAuthors() {
       let result = "";
 
-      if (this.activeBook.volumeInfo.authors.length > 0) {
+      if (this.activeBook.volumeInfo.authors) {
         this.activeBook.volumeInfo.authors.forEach(function(e, idx, array) {
           if (idx < array.length - 1) {
             result += `${e}, `;
@@ -72,12 +72,8 @@ export default {
       return "http://placehold.jp/24/cccccc/ffffff/300x400.png?text=No image";
     },
     bookLanguage() {
-      //   return this.activeBook.volumeInfo.language;
       for (const key in language) {
         if (language.hasOwnProperty(key)) {
-          //   console.log(key, language[key]);
-          //   console.log(this.activeBook.volumeInfo.language == language[key]);
-
           if (this.activeBook.volumeInfo.language == language[key]) return key;
         }
       }
